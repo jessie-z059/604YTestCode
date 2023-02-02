@@ -1,4 +1,5 @@
 #include "main.h"
+using namespace pros;
 
 /**
  * A callback function for LLEMU's center button.
