@@ -35,6 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
+#include "function.hpp"
 
 /**
  * You should add more #includes here
@@ -77,5 +78,19 @@ void opcontrol(void);
  */
 //#include <iostream>
 #endif
+extern pros:: Motor FrontleftDrive;
+extern pros:: Motor FrontrightDrive;
+extern pros:: Motor BackleftDrive;
+extern pros:: Motor BackrightDrive;
+extern pros:: Motor RightmiddleDrive;
+extern pros:: Motor catapult2;
+extern pros:: Imu Inertial;
+extern pros:: ADIGyro gyro;
+extern pros:: ADIDigitalIn limit;
+extern pros:: Motor LeftmiddleDrive;
+extern pros:: Motor intake;
+extern pros:: ADIDigitalOut expansion;
+
+
 
 #endif  // _PROS_MAIN_H_
