@@ -209,7 +209,7 @@ lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 		}
 		if (catstate == 1){
 
-			catapult2=0;
+			catapult2 = 0;
 			// catapult1.move_relative(0,20);
 			// catapult2.move_relative(0,20);
 		}
@@ -226,11 +226,11 @@ lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 
 
 //intake
-		if(master.get_digital(DIGITAL_R2) ==1){
+		if(master.get_digital(DIGITAL_R2) == 1){
 
-			intake=-127;
+			intake = -127;
 }
-else if(master.get_digital(DIGITAL_L1) ==1){
+else if(master.get_digital(DIGITAL_L1) == 1){
 
 	intake=127;
 }
@@ -239,7 +239,7 @@ else if(master.get_digital(DIGITAL_L1) ==1){
 				intake=0;
 			}
 
-		if(master.get_digital(DIGITAL_X) ==1){
+		if(master.get_digital(DIGITAL_X) == 1){
 			expansion.set_value(1);
 		}
 		else{

@@ -15,8 +15,8 @@ BackleftDrive.tare_position();
 BackrightDrive.tare_position();
 RightmiddleDrive.tare_position();
 LeftmiddleDrive.tare_position();
-while(averagepostion() < target){
-error = averagepostion() - target;
+while(averageposition() < target){
+error = averageposition() - target;
 derivative = error - lasterror;
 integral += error;
 int power = (kP * error) + (kI * integral) + (kD * derivative);
