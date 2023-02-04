@@ -86,7 +86,8 @@ void autonomous(){
   lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 	lcd::print(3,"Gyro: %f degrees", gyro.get_value());
 	delay(50);
-		
+
+//AUTO SKILLS	
 move(-100,50); //move back
 roller(500,127); //do 1st roller
 delay(500);
@@ -149,10 +150,11 @@ rotate(-90,60,0.5);
 move(3000,70);
 */
 
+//MATCH AUTO
 
 
 
-
+//DRAFTS
 
 //red roller
 /*moveback(150,30);
@@ -183,6 +185,7 @@ void opcontrol(){
 	int start=0;
 	int catstate= 0;
 while(true){
+
 lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 	lcd::print(3,"Gyro: %f degrees", gyro.get_value());
 	
@@ -226,30 +229,24 @@ lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 
 
 //intake
-		if(master.get_digital(DIGITAL_R2) == 1){
+if(master.get_digital(DIGITAL_R2) == 1){
 
-			intake = -127;
+	intake = -127;
 }
 else if(master.get_digital(DIGITAL_L1) == 1){
 
 	intake=127;
 }
-			else{
+	else{
 
-				intake=0;
-			}
+		intake=0;
+	}
 
-		if(master.get_digital(DIGITAL_X) == 1){
-			expansion.set_value(1);
-		}
-		else{
-			expansion.set_value(0);
-		}
-
-
-
+	if(master.get_digital(DIGITAL_X) == 1){
+		expansion.set_value(1);
+	}
+	else{
+		expansion.set_value(0);
+	}
 }
 }
-
-
-
