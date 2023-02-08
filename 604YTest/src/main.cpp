@@ -87,8 +87,8 @@ void autonomous(){
 	lcd::print(3,"Gyro: %f degrees", gyro.get_value());
 	delay(50);
 
-//AUTO SKILLS	
-move(-100,50); //move back
+//AUTO SKILLS 1
+/*move(-100,50); //move back
 roller(500,127); //do 1st roller
 delay(500);
 move(2000,50); //move forward
@@ -124,6 +124,11 @@ delay(500);
 cata(500,80);
 delay(500);
 cata(4700,90);
+*/
+
+//AUTO SKILLS 2
+expansion.set_value(1);
+
 
 /*
 rotate(-90,60,0.4); //turn left to 2nd roller
@@ -242,7 +247,8 @@ else if(master.get_digital(DIGITAL_L1) == 1){
 		intake=0;
 	}
 
-	if(master.get_digital(DIGITAL_X) == 1){
+//expansion
+if(master.get_digital(DIGITAL_X) == 1){
 		expansion.set_value(1);
 	}
 	else{

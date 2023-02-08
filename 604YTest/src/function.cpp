@@ -154,6 +154,7 @@ void moveback(double distance, double power){
   PowerDrive(0);
 }
 
+//WITH INERTIAL SENSOR
 void PIDturn(double degree, double kP, double kI, double kD){
   Inertial.reset();
     int direction = abs(degree) / (degree);
@@ -179,7 +180,6 @@ void PIDturn(double degree, double kP, double kI, double kD){
 }
 */
  
-//WITH INERTIAL SENSOR
 /*void turnRight(double degree){
   Inertial.tare_rotation();
   while(Inertial.get_rotation <= degree){
