@@ -249,10 +249,10 @@ else if(master.get_digital(DIGITAL_L1) == 1){
 
 //expansion
 if(master.get_digital(DIGITAL_X) == 1){
-		expansion.set_value(1);
+		expansion.set_value(0);
 	}
 	else{
-		expansion.set_value(0);
+		expansion.set_value(1);
 	}
 }
 }
