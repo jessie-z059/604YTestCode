@@ -2,55 +2,69 @@
 #include "function.hpp"
 using namespace pros;
 
-//functions in use
-void PowerDrive(int power){
-  FrontleftDrive = power;
-  FrontrightDrive = -power;
-  RightmiddleDrive = power;
-  LeftmiddleDrive = -power;
-  BackrightDrive = -power;
-  BackleftDrive = power;
+void PIDdrive(double target, double kP, double kI, double kD){
+double error;
+double integral; 
+double derivative;
+double lasterror;
+double previouserror;
+delay(20);
+FrontrightDrive.tare_position();
+FrontleftDrive.tare_position();
+BackleftDrive.tare_position();
+BackrightDrive.tare_position();
+RightmiddleDrive.tare_position();
+LeftmiddleDrive.tare_position();
+while(averagepostion() < target){
+error = averagepostion() - target;
+derivative = error - lasterror;
+integral += error;
+int power = (kP * error) + (kI * integral) + (kD * derivative);
+setDrive(-power,-power);
+lasterror = error;
 }
+PowerDrive(0,0);
+}
+
+void PIDturn(double degree, double kP, double kI, double kD){
+  Inertial.reset();
+   int direction = abs(degree) / (degree);
+kP=0;
+kI=0;
+kD=0;
+
+double error;
+double integral = 0; 
+double derivative = 0; 
+double lasterror;
+double sensor_value = Inertial.get_rotation();
+
+
+while(Inertial.get_rotation() < degree){
+  error = degree - sensor_value;
+  derivative = error - lasterror;
+  integral += error;
+  int power = (kP * error) + (kI * integral) + (kD * derivative);
+  setDrive(power * direction, power * direction);
+  lasterror = error;
+}
+setDrive(0,0);
+}
+
+
+
+
+
 
 void reset(){
-  FrontleftDrive.tare_position();
-  BackleftDrive.tare_position();
-  FrontrightDrive.tare_position();
-  BackrightDrive.tare_position();
-  RightmiddleDrive.tare_position();
-  LeftmiddleDrive.tare_position();
+FrontleftDrive.tare_position();
+BackleftDrive.tare_position();
+FrontrightDrive.tare_position();
+BackrightDrive.tare_position();
+RightmiddleDrive.tare_position();
+LeftmiddleDrive.tare_position();
 }
 
-void setDrive(int left, int right){
-  FrontleftDrive = left;
-  BackleftDrive = left;
-  LeftmiddleDrive = -left;
-  RightmiddleDrive = right;
-  FrontrightDrive = -right;
-  BackrightDrive = -right;
-}
-
-double averagepostion(){
-  return (fabs(FrontrightDrive.get_position()) + fabs(FrontleftDrive.get_position()) + fabs(BackleftDrive.get_position()) + fabs(BackrightDrive.get_position()) + fabs(RightmiddleDrive.get_position()) + fabs(LeftmiddleDrive.get_position()))/6;
-}
-
-void roller(double distance, double speed){
-  intake.tare_position();
-  while((fabs(intake.get_position()) <=fabs(distance))){
-    intake = speed;
-  }
-  intake = 0;
-}
-
-void cata(int distance, int power){
-  catapult2.tare_position();
-  while(catapult2.get_position() < distance){
-    catapult2 = power;
-  }
-  catapult2 = 0;
-}
-
-//WITH GYRO SENSOR
 void rotate(int degree, int voltage, double numbers){
   int direction = abs(degree) / (degree);
   gyro.reset();
@@ -58,49 +72,71 @@ void rotate(int degree, int voltage, double numbers){
   while(fabs(gyro.get_value()) < abs(degree * 10)){
     pros::delay(50);
   }
-  if(fabs(gyro.get_value()) > abs(degree * 10)){
-    while(fabs(gyro.get_value()) > abs(degree * 10)){
-      setDrive(numbers * voltage * direction, numbers * -voltage * direction);
-      pros::delay(50);
-    }
+if(fabs(gyro.get_value()) > abs(degree * 10)){
+  while(fabs(gyro.get_value()) > abs(degree * 10)){
+    setDrive(numbers * voltage * direction, numbers * -voltage * direction);
+    pros::delay(50);
   }
+}
   else if(fabs(gyro.get_value()) < abs(degree * 10)) {
-    while(fabs(gyro.get_value()) > abs(degree * 10)){
-      setDrive(numbers * -voltage * direction, numbers * voltage * direction);
-      pros::delay(50);
-    }
+  while(fabs(gyro.get_value()) > abs(degree * 10)){
+    setDrive(numbers * -voltage * direction, numbers * voltage * direction);
+    pros::delay(50);
   }
-  setDrive(0,0);
+}
+setDrive(-1,-1);
+}
+
+void setDrive(int left, int right){
+ FrontleftDrive = left;
+ BackleftDrive = left;
+ LeftmiddleDrive = -left;
+ RightmiddleDrive = right;
+ FrontrightDrive = -right;
+ BackrightDrive = -right;
+}
+
+
+double averagepostion(){
+  return (fabs(FrontrightDrive.get_position()) + fabs(FrontleftDrive.get_position()) + fabs(BackleftDrive.get_position()) + fabs(BackrightDrive.get_position()) + fabs(RightmiddleDrive.get_position()) + fabs(LeftmiddleDrive.get_position()))/6;
+
 }
 
 void move(int distance, int power){
   reset();
     int direction = abs(distance) / distance;
-  gyro.reset();
+gyro.reset();
 
-  delay(50);
+delay(50);
   while(averagepostion() < abs(distance)){
-    setDrive(power * direction - gyro.get_value(), power * direction + gyro.get_value());
-  }
-  setDrive(direction,direction);
-
-  setDrive(-1,1);
+setDrive(power * direction - gyro.get_value(), power * direction + gyro.get_value());
 }
+setDrive(direction,direction);
 
 
-// WITHOUT SENSORS
-void moveforward(double distance, double power){
+setDrive(-3,3);
+  }
+
+  void roller(double distance, double speed){
+    intake.tare_position();
+  while((fabs(intake.get_position()) <=fabs(distance))){
+  intake = speed;
+  }
+   intake = 0;
+  }
+  void moveforward(double distance, double power){
   double error;
   FrontleftDrive.tare_position();
   FrontrightDrive.tare_position();
-
   while((fabs(FrontleftDrive.get_position())+fabs(FrontrightDrive.get_position()))/2 <= fabs(distance)){
+
     FrontleftDrive = power;
     FrontrightDrive = -power;
     RightmiddleDrive = power;
     LeftmiddleDrive = -power;
     BackrightDrive = -power;
     BackleftDrive = power;
+
   }
   FrontleftDrive = -1;
   FrontrightDrive = -1;
@@ -108,95 +144,128 @@ void moveforward(double distance, double power){
   BackleftDrive = -1;
   RightmiddleDrive = -1;
   LeftmiddleDrive = -1;
-}
-
-void moveback(double distance, double power){
-  double error;
-  FrontleftDrive.tare_position();
-  FrontrightDrive.tare_position();
-  
-  while((fabs(FrontleftDrive.get_position())+fabs(FrontrightDrive.get_position()))/2 <= fabs(distance)){
-    FrontleftDrive = -power;
-    FrontrightDrive = power;
-    RightmiddleDrive = -power;
-    LeftmiddleDrive = power;
-    BackrightDrive = power;
-    BackleftDrive = -power;
   }
-  FrontleftDrive = -1;
-  FrontrightDrive = -1;
-  BackrightDrive = -1;
-  BackleftDrive = -1;
-}
+  void moveback(double distance, double power){
+      double error;
+      FrontleftDrive.tare_position();
+      FrontrightDrive.tare_position();
+      while((fabs(FrontleftDrive.get_position())+fabs(FrontrightDrive.get_position()))/2 <= fabs(distance)){
 
-//FUNCTIONS IN TEST
-/*void PIDdrive(double target, double kP, double kI, double kD){
-  double error;
-  double integral; 
-  double derivative;
-  double lasterror;
-  double previouserror;
-  delay(20);
-  FrontrightDrive.tare_position();
-  FrontleftDrive.tare_position();
-  BackleftDrive.tare_position();
-  BackrightDrive.tare_position();
-  RightmiddleDrive.tare_position();
-  LeftmiddleDrive.tare_position();
-  while(averagepostion() < target){
-  error = averagepostion() - target;
-  derivative = error - lasterror;
-  integral += error;
-  int power = (kP * error) + (kI * integral) + (kD * derivative);
-  setDrive(-power,-power);
-  lasterror = error;
+          FrontleftDrive = -power;
+          FrontrightDrive = power;
+          RightmiddleDrive = -power;
+          LeftmiddleDrive = power;
+          BackrightDrive = power;
+          BackleftDrive = -power;
+      }
+      FrontleftDrive = -1;
+      FrontrightDrive = -1;
+      BackrightDrive = -1;
+      BackleftDrive = -1;
+      }
+
+void cata(int distance, int power){
+  catapult2.tare_position();
+  while(catapult2.get_position() < distance){
+    catapult2 = power;
   }
-  PowerDrive(0);
+   catapult2 = 0;
 }
 
-//WITH INERTIAL SENSOR
-void PIDturn(double degree, double kP, double kI, double kD){
-  Inertial.reset();
-    int direction = abs(degree) / (degree);
-  kP=0;
-  kI=0;
-  kD=0;
 
-  double error;
-  double integral = 0; 
-  double derivative = 0; 
-  double lasterror;
-  double sensor_value = Inertial.get_rotation();
 
-  while(abs(Inertial.get_rotation()) < degree){
-    error = degree - sensor_value;
-    derivative = error - lasterror;
-    integral += error;
-    int power = (kP * error) + (kI * integral) + (kD * derivative);
-    setDrive(power * direction, -power * direction);
-    lasterror = error;
-  }
-  setDrive(0,0);
+
+void PowerDrive(double power,double turn){
+	FrontrightDrive =-power + turn;
+	BackrightDrive =-power + turn;
+	FrontleftDrive =+power + turn;
+	BackleftDrive = +power + turn;
+	RightmiddleDrive=+power - turn;
+	LeftmiddleDrive = -power - turn;
 }
-*/
- 
-/*void turnRight(double degree){
+void turnRight(double degree, double kP,double kd){
   Inertial.tare_rotation();
-  while(Inertial.get_rotation <= degree){
-    PowerDrive(0,100);
+  double error; 
+  double power;
+  double der;
+  double last_error;
+  
+  
+  while(Inertial.get_rotation() <= degree){
+    error = degree - Inertial.get_rotation();
+   
+    der = error -last_error;
+    last_error = error;
+     power = error*kP + der * kd ;
+    PowerDrive(0,power);
+  }
+  PowerDrive(0,0);
+}
+void turnLeft(double degree, double kP,double kd){
+  Inertial.tare_rotation();
+  double error; 
+  double power;
+  double der;
+  double last_error;
+  
+  
+  while(fabs(Inertial.get_rotation()) <= degree){
+    error = degree - fabs(Inertial.get_rotation());
+   
+    der = error -last_error;
+    last_error = error;
+     power = error*kP + der * kd ;
+    PowerDrive(0,-power);
   }
   PowerDrive(0,0);
 }
 
-void PowerDrive(double power,double turn){
-  FrontleftDrive = -power + turn;
-  FrontrightDrive = power + turn;
-  RightmiddleDrive = -power + turn;
-  LeftmiddleDrive = power +turn;
-  BackrightDrive = power + turn;
-  BackleftDrive = -power + turn;
-}
-*/
+  void drive(double distance, double kp, double Ki, double Kd){
+    Inertial.tare_rotation();
+    reset();
+    double error;
+    double power;
+    double der;
+    double last_error;
+    double integral;
+
+    double turn_error;
+    double turn_der;
+    double turn_integral;
+    double turn_lasterror;
+    double turn_power;
+    double turn_Kp = 0.5;
+    double turn_Ki = 0;
+    double turn_Kd = 0;
+  
+
+    while(averagepostion() <= distance ){
+      error = distance - averagepostion();
+      der = error - last_error;
+      last_error = error;
+      power = error * kp + der * Kd;
+      if(power >= 100){
+        power = 100;
+      }
+      else{
+        power = power;
+      }
+      turn_error = Inertial.get_rotation();
+      turn_integral += turn_error;
+      turn_der = turn_error - turn_lasterror;
+      turn_lasterror = turn_error;
+      turn_power = turn_Kp * turn_error + turn_integral * turn_Ki + turn_der * turn_Kd;
+
+      
+      PowerDrive(power, turn_power);
+
+
+    }
+    PowerDrive(0,0);
+  }
+  
+
+
 
 /*void driveStraight(double distance, double speed){
   FrontleftDrive.tare_position{};

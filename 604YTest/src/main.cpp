@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "function.hpp"
 using namespace pros;
 
 Motor FrontrightDrive(20);
@@ -43,7 +43,8 @@ void initialize() {
 	
 	pros::lcd::register_btn1_cb(on_center_button);
 	gyro.reset();
-	delay(50);
+	Inertial.reset();
+	delay(1000);
 
 }
 
@@ -82,16 +83,21 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous(){
+	
+	drive(2000,0.15,0,1);
+	
+	
+	
+	//turnLeft(15,0.85,1.6);
 
-  lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
+
+ /* lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 	lcd::print(3,"Gyro: %f degrees", gyro.get_value());
 	delay(50);
-
-//AUTO SKILLS 1
-/*move(-100,50); //move back
-roller(500,127); //do 1st roller
+move(-100,50); //move back
+roller(200,127); //do 1st roller
 delay(500);
-move(2000,50); //move forward
+move(2100,35); //move forward
 delay(1000);
 rotate(13,45,0.5); //aim at basket
 delay(500);
@@ -99,38 +105,49 @@ cata(500,80);
 delay(500);
 cata(4700,90);
 delay(500);
-move(-130,50); //back up
+move(-200,50);
 delay(500);
-rotate(119,45,0.5); //turn to intake discs
+rotate(123,45,0.5);
 intake=127;
 move(-2000,30);
-rotate(-75,45,0.5);
+rotate(-80,45,0.5);
 delay(500);
-cata(500,80);
-delay(500);
-cata(4700,90);
-rotate(80,45,0.5);
-move(-300,100);
-delay(500);
-move(-500,50);
-delay(500);
-rotate(-58,60,0.5);
-delay(500);
-move(-50,50);
-delay(500);
-rotate(8,45,0.5);
-move(1300,50);
-delay(500);
-cata(500,80);
-delay(500);
-cata(4700,90);
-*/
 
-//AUTO SKILLS 2
+move(-200,20);
+cata(500,80);
+delay(500);
+cata(4700,90);
+delay(100);
+rotate(85,45,0.5);
+move(-450,40);
+delay(500);
+move(-500,30);
+delay(500);
+rotate(-67,60,0.5);
+delay(500);
+move(-100,50);
+delay(500); 
+rotate(-3,45,0.5);
+delay(100);
+move(1000,50);
+delay(500);
+cata(500,80);
+delay(500);
+cata(4700,90);
+move(-900,30);
+rotate(-95,45,0.5);
+expansion.set_value(1);
+delay(1000);
+expansion.set_value(0);
+delay(500);
 expansion.set_value(1);
 
 
-/*
+*/
+
+
+
+/* 
 rotate(-90,60,0.4); //turn left to 2nd roller
 delay(500);
 move(-700,40);
@@ -155,22 +172,20 @@ rotate(-90,60,0.5);
 move(3000,70);
 */
 
-//MATCH AUTO
 
 
 
-//DRAFTS
+
 
 //red roller
-/*moveback(150,30);
+/*moveback(-100,30);
 delay(300);
-roller(250,-127);*/
-//blue roller
-/*moveback(150,30);
-delay(500);
-roller(200,127);
-*/
+roller(90,-127);*/
+
+
+
 }
+
 // shoot (500,80) delay(500) reload(4690,80)
 
 /**
@@ -190,14 +205,13 @@ void opcontrol(){
 	int start=0;
 	int catstate= 0;
 while(true){
-
 lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 	lcd::print(3,"Gyro: %f degrees", gyro.get_value());
 	
 	delay(50);
 
 	int leftY = master.get_analog(ANALOG_LEFT_Y);
-	int rightX = master.get_analog(ANALOG_RIGHT_X);
+	int rightX = master.get_analog(ANALOG_RIGHT_X)*3/4;
 	FrontrightDrive =-leftY +rightX;
 	BackrightDrive =-leftY +rightX;
 	FrontleftDrive =+leftY +rightX;
@@ -217,7 +231,7 @@ lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 		}
 		if (catstate == 1){
 
-			catapult2 = 0;
+			catapult2=0;
 			// catapult1.move_relative(0,20);
 			// catapult2.move_relative(0,20);
 		}
@@ -234,25 +248,35 @@ lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 
 
 //intake
-if(master.get_digital(DIGITAL_R2) == 1){
+		if(master.get_digital(DIGITAL_R2) ==1){
 
-	intake = -127;
+			intake=-127;
 }
-else if(master.get_digital(DIGITAL_L1) == 1){
+else if(master.get_digital(DIGITAL_L1) ==1){
 
 	intake=127;
 }
-	else{
 
-		intake=0;
-	}
+else if(master.get_digital(DIGITAL_L2) ==1){
 
-//expansion
-if(master.get_digital(DIGITAL_X) == 1){
-		expansion.set_value(0);
-	}
-	else{
-		expansion.set_value(1);
-	}
+	intake = -70;
+}
+			else{
+
+				intake=0;
+			}
+
+		if(master.get_digital(DIGITAL_X) ==1){
+			expansion.set_value(1);
+		}
+		else{
+			expansion.set_value(0);
+		}
+
+
+
 }
 }
+
+
+
