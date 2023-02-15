@@ -35,7 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "function.hpp"
+
 
 /**
  * You should add more #includes here
@@ -73,6 +73,9 @@ void opcontrol(void);
 #endif
 
 #ifdef __cplusplus
+#include "time.hpp"
+#include "function.hpp"
+
 /**
  * You can add C++-only headers here
  */
