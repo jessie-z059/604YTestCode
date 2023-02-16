@@ -1,5 +1,7 @@
 #include "main.h"
+#include "time.hpp"
 #include "function.hpp"
+
 using namespace pros;
 
 Motor FrontrightDrive(2);
@@ -84,11 +86,63 @@ void competition_initialize() {}
  */
 void autonomous(){
 	
-	drive(2000,0.15,0,1);
+
+	
+
+	move(-50,55);
+	roller(150,127);
+	delay(100);
+	move(100,40);
+	turnRight(137,0.75,0,1);
+	intake=127;
+	drive('b',700,0.15,0,60);
+	intake = 0;
+	turnLeft(47,1.236,2,0);
+	drive('b',370,0.4,0,50);
+	intake=127;
+	delay(100);
+	intake=0;
+	drive('f',200,0.3,0,60);
+	turnLeft(90,0.805,0,0);
+	move(50,127);
+	drive('f',1200,0.15,0,70);
+	cata(500,80);
+	cata(4600,127);
+	turnLeft(50,0.82,0,1);
+	intake=127;
+	drive('b',1000,0.15,0,70);
 	
 	
+	/*
+	drive('f',620,0.2,0,0.5,1);
+	delay(200);
+	turnRight(90,0.84,1,1);
+	intake=127;
+	drive('b',500,0.25,0,0.55,1);
+	delay(250);
+	intake=0;
+	delay(200);
+	drive('f',300,0.3,0,1.2,1);
+	delay(500);
+	turnLeft(90,0.8,3,1);
+	delay(500);
+	drive('f',1200,0.18,0,0.9,1);
+	cata(500,80);
+	delay(100);
+	cata(4800,127);
+	drive('b',600,0.25,0,0.6,1);
+	turnLeft(130,0.8,0.8,1);
+	intake=127;
+	drive('b',2100,0.15,0,0.6,1);
+	delay(100);
+	intake = 0;
+	*/
 	
-	//turnLeft(15,0.85,1.6);
+
+
+	
+	
+
 
 
  /* lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
