@@ -2,16 +2,16 @@
 #include "function.hpp"
 using namespace pros;
 
-Motor FrontrightDrive(20);
-Motor FrontleftDrive(8);
-Motor BackrightDrive(17);
-Motor BackleftDrive(4);
-Motor RightmiddleDrive(19);
+Motor FrontrightDrive(2);
+Motor FrontleftDrive(17);
+Motor BackrightDrive(13);
+Motor BackleftDrive(15);
+Motor RightmiddleDrive(20);
 Motor catapult2(21);
-Motor LeftmiddleDrive(7);
-Motor intake(5);
+Motor LeftmiddleDrive(19);
+Motor intake(11);
 Controller master(E_CONTROLLER_MASTER);
-Imu Inertial(2);
+Imu Inertial(16);
 ADIGyro gyro(6);
 ADIDigitalOut expansion(2);
 ADIDigitalIn limit(1);
