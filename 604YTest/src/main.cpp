@@ -5,15 +5,15 @@
 using namespace pros;
 
 Motor FrontrightDrive(20);
-Motor FrontleftDrive(8);
-Motor BackrightDrive(17);
-Motor BackleftDrive(4);
-Motor RightmiddleDrive(19);
+Motor FrontleftDrive(19);
+Motor BackrightDrive(13);
+Motor BackleftDrive(15);
+Motor RightmiddleDrive(2);
 Motor catapult2(21);
-Motor LeftmiddleDrive(7);
-Motor intake(5);
+Motor LeftmiddleDrive(17);
+Motor intake(11);
 Controller master(E_CONTROLLER_MASTER);
-Imu Inertial(2);
+Imu Inertial(12);
 ADIGyro gyro(6);
 ADIDigitalOut expansion(2);
 ADIDigitalIn limit(1);
@@ -93,143 +93,33 @@ void autonomous(){
 	roller(150,127);
 	delay(100);
 	move(100,40);
-	turnRight(137,0.75,0,1);
+	turnRight(137,0.76,0,1);
 	intake=127;
-	drive('b',700,0.15,0,60);
+	drive('b',690,0.2,0,90);
+	delay(500);
 	intake = 0;
-	turnLeft(47,1.236,2,0);
+	turnLeft(47,1.4,0,0);
 	drive('b',370,0.4,0,50);
 	intake=127;
 	delay(100);
 	intake=0;
-	drive('f',200,0.3,0,60);
-	turnLeft(90,0.805,0,0);
+	drive('f',400,0.3,0,60);
+	turnLeft(90,0.9,0,0);
 	move(50,127);
-	drive('f',1200,0.15,0,70);
+	drive('f',1400,0.15,0,70);
 	cata(500,80);
-	cata(4600,127);
-	turnLeft(50,0.82,0,1);
-	intake=127;
-	drive('b',1000,0.15,0,70);
-	
-	
-	/*
-	drive('f',620,0.2,0,0.5,1);
-	delay(200);
-	turnRight(90,0.84,1,1);
-	intake=127;
-	drive('b',500,0.25,0,0.55,1);
-	delay(250);
-	intake=0;
-	delay(200);
-	drive('f',300,0.3,0,1.2,1);
-	delay(500);
-	turnLeft(90,0.8,3,1);
-	delay(500);
-	drive('f',1200,0.18,0,0.9,1);
-	cata(500,80);
-	delay(100);
-	cata(4800,127);
-	drive('b',600,0.25,0,0.6,1);
-	turnLeft(130,0.8,0.8,1);
-	intake=127;
-	drive('b',2100,0.15,0,0.6,1);
-	delay(100);
-	intake = 0;
-	*/
-	
-
+	cata(4750,127);
+	drive('b',1700,0.15,0,70);
+	turnRight(38,2,0,0);
+	expansion.set_value(1);
+	expansion.set_value(0);
+		expansion.set_value(1);
+			expansion.set_value(0);
+				expansion.set_value(1);
+					expansion.set_value(1);
 
 	
 	
-
-
-
- /* lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
-	lcd::print(3,"Gyro: %f degrees", gyro.get_value());
-	delay(50);
-move(-100,50); //move back
-roller(200,127); //do 1st roller
-delay(500);
-move(2100,35); //move forward
-delay(1000);
-rotate(13,45,0.5); //aim at basket
-delay(500);
-cata(500,80); 
-delay(500);
-cata(4700,90);
-delay(500);
-move(-200,50);
-delay(500);
-rotate(123,45,0.5);
-intake=127;
-move(-2000,30);
-rotate(-80,45,0.5);
-delay(500);
-
-move(-200,20);
-cata(500,80);
-delay(500);
-cata(4700,90);
-delay(100);
-rotate(85,45,0.5);
-move(-450,40);
-delay(500);
-move(-500,30);
-delay(500);
-rotate(-67,60,0.5);
-delay(500);
-move(-100,50);
-delay(500); 
-rotate(-3,45,0.5);
-delay(100);
-move(1000,50);
-delay(500);
-cata(500,80);
-delay(500);
-cata(4700,90);
-move(-900,30);
-rotate(-95,45,0.5);
-expansion.set_value(1);
-delay(1000);
-expansion.set_value(0);
-delay(500);
-expansion.set_value(1);
-
-
-*/
-
-
-
-/* 
-rotate(-90,60,0.4); //turn left to 2nd roller
-delay(500);
-move(-700,40);
-roller(600,127); //do 2nd roller
-delay(500);
-move(150,50);
-delay(100);
-rotate(105,60,0.7);
-delay(500);
-intake=127;
-move(-850,55);
-delay(2000);
-move(2300,60);
-delay(500);
-rotate(-5,50,0.5);
-delay(500);
-cata(500,80);
-delay(500);
-cata(5000,80);
-move(-500,60);
-rotate(-90,60,0.5);
-move(3000,70);
-*/
-
-
-
-
-
 
 //red roller
 /*moveback(-100,30);
@@ -281,7 +171,7 @@ lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 		}
 		if(catstate == 0){
 
-			catapult2 = 100;
+			catapult2 = 127;
 		}
 		if (catstate == 1){
 
@@ -304,15 +194,15 @@ lcd::print(1,"IMU get rotation: %f degrees", Inertial.get_rotation());
 //intake
 		if(master.get_digital(DIGITAL_R2) ==1){
 
-			intake=-127;
+			intake=-105;
 }
 else if(master.get_digital(DIGITAL_L1) ==1){
 
-	intake=127;
+	intake=105;
 }
 
 else if(master.get_digital(DIGITAL_L2) ==1){
-
+ 
 	intake = -70;
 }
 			else{
