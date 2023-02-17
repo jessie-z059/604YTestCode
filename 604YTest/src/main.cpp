@@ -4,6 +4,7 @@
 
 using namespace pros;
 
+<<<<<<< HEAD
 Motor FrontrightDrive(20);
 Motor FrontleftDrive(19);
 Motor BackrightDrive(13);
@@ -14,6 +15,18 @@ Motor LeftmiddleDrive(17);
 Motor intake(11);
 Controller master(E_CONTROLLER_MASTER);
 Imu Inertial(12);
+=======
+Motor FrontrightDrive(2);
+Motor FrontleftDrive(17);
+Motor BackrightDrive(13);
+Motor BackleftDrive(15);
+Motor RightmiddleDrive(20);
+Motor catapult2(21);
+Motor LeftmiddleDrive(19);
+Motor intake(11);
+Controller master(E_CONTROLLER_MASTER);
+Imu Inertial(16);
+>>>>>>> f7f907c9d534063f7fdf758422c8b24c532a695f
 ADIGyro gyro(6);
 ADIDigitalOut expansion(2);
 ADIDigitalIn limit(1);
